@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpressVPN - The VPN that just works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Header & Hero Section */
+        .header {
+            position: relative;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://play-lh.googleusercontent.com/Etl47LQkzsZW91hsskMR5ddhPWlBpi1k5-iy8ZDfulaE8Rekm6rHHb__uGcKTacQ4Cw=w3840-h2160-rw);
+            background-size: cover, 50px 50px;
+            background-position: center, center;
+            background-repeat: no-repeat, repeat;
+            z-index: 1;
+            animation: subtleMove 20s ease-in-out infinite;
+        }
+
+        @keyframes subtleMove {
+
+            0%,
+            100% {
+                background-position: center, 0px 0px;
+            }
+
+            50% {
+                background-position: center, 25px 25px;
+            }
+        }
+
+        .hero {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            color: #000000;
+            text-align: center;
+            pointer-events: none;
+            padding: 80px 20px 40px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .hero * {
+            pointer-events: auto;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            /* font-size: 18px; */
+            color: #c31818;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            font-size: 250%;
+            font-family:Georgia, 'Times New Roman', Times, serif;
+        }
+
+        .logo:hover {
+            transform: scale(1.09);
+        }
+
+        .logo::before {
+            content: "";
+            font-size: 24px;
+            margin-right: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #650f0f;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .language-selector:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #000000;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 16px;
+            margin-bottom: 32px;
+            color: #000000;
+            opacity: 0.9;
+            max-width: 500px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            background: #00bf63;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.20);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            background: #00a855;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: #fff;
+        }
+
+        .feature-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 80px;
+            gap: 60px;
+        }
+
+        .feature-section:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .feature-visual {
+            flex: 1;
+            text-align: center;
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #1f2937;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .feature-content p {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Visual Elements */
+        .pixelated-world {
+            width: 240px;
+            height: 240px;
+            background: linear-gradient(135deg, #e5e7eb 0%, #f3f4f6 100%);
+            border-radius: 20px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .pixelated-world:hover {
+            transform: scale(1.05);
+        }
+
+        .pixelated-world::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(0deg, transparent 0px, transparent 18px, rgba(156, 163, 175, 0.3) 18px, rgba(156, 163, 175, 0.3) 20px),
+                repeating-linear-gradient(90deg, transparent 0px, transparent 18px, rgba(156, 163, 175, 0.3) 18px, rgba(156, 163, 175, 0.3) 20px);
+        }
+
+        .pixelated-world::before {
+            content: "🌍";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            z-index: 1;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .security-illustration {
+            width: 180px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .security-shield {
+            width: 120px;
+            height: 160px;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            border-radius: 60px 60px 20px 20px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .security-shield:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(245, 158, 11, 0.4);
+        }
+
+        .security-shield::before {
+            content: "🔒";
+            font-size: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .devices-visual {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 30px 0;
+        }
+
+        .device-laptop {
+            width: 100px;
+            height: 65px;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .device-laptop:hover {
+            transform: translateY(-5px);
+        }
+
+        .device-laptop::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 115px;
+            height: 6px;
+            background: #374151;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .device-tablet {
+            width: 60px;
+            height: 85px;
+            background: #374151;
+            border-radius: 10px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .device-tablet:hover {
+            transform: translateY(-5px);
+        }
+
+        .device-tablet::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+
+        .device-phone {
+            width: 40px;
+            height: 70px;
+            background: #1f2937;
+            border-radius: 16px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .device-phone:hover {
+            transform: translateY(-5px);
+        }
+
+        .device-phone::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 4px;
+            right: 4px;
+            bottom: 6px;
+            background: #f3f4f6;
+            border-radius: 12px;
+        }
+
+        .device-icons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 16px 0;
+            font-size: 20px;
+        }
+
+        .device-icons span {
+            transition: transform 0.3s ease;
+        }
+
+        .device-icons span:hover {
+            transform: scale(1.2);
+        }
+
+        .see-all-apps {
+            color: #00bf63;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .see-all-apps:hover {
+            color: #00a855;
+        }
+
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 80px 0;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            width: 120px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .benefit-icon.protection {
+            background: linear-gradient(45deg, #bef264, #84cc16);
+        }
+
+        .benefit-icon.global {
+            background: linear-gradient(45deg, #1e293b, #334155);
+        }
+
+        .benefit-icon.speed {
+            background: linear-gradient(45deg, #00bbff, #ff0000);
+        }
+
+        .benefit-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .benefit-card p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .see-advantages {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .see-advantages a {
+            color: #00bf63;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .see-advantages a:hover {
+            color: #00a855;
+        }
+
+        /* Global Network */
+        .global-network {
+            text-align: center;
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .global-network h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .network-map {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .network-map:hover {
+            transform: scale(1.02);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1f2937;
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .server-locations-link {
+            margin-top: 32px;
+        }
+
+        .server-locations-link a {
+            color: #00bf63;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .server-locations-link a:hover {
+            color: #00a855;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .header {
+                min-height: 300px;
+            }
+
+            .hero {
+                padding: 60px 16px 20px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+
+            .hero p {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+
+            .cta-button {
+                padding: 14px 28px;
+                font-size: 14px;
+            }
+
+            .nav {
+                padding: 16px 0;
+            }
+
+            .language-selector {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 40px 0;
+            }
+
+            .feature-section {
+                flex-direction: column !important;
+                text-align: center;
+                gap: 32px;
+                margin-bottom: 50px;
+            }
+
+            .feature-content h2 {
+                font-size: 24px;
+                margin-bottom: 16px;
+            }
+
+            .feature-content p {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .pixelated-world {
+                width: 180px;
+                height: 180px;
+            }
+
+            .security-illustration {
+                width: 140px;
+                height: 160px;
+            }
+
+            .security-shield {
+                width: 100px;
+                height: 130px;
+            }
+
+            .devices-visual {
+                gap: 16px;
+                padding: 20px 0;
+            }
+
+            .device-laptop {
+                width: 80px;
+                height: 50px;
+            }
+
+            .device-laptop::after {
+                width: 90px;
+                height: 5px;
+                bottom: -5px;
+            }
+
+            .device-tablet {
+                width: 48px;
+                height: 68px;
+            }
+
+            .device-phone {
+                width: 32px;
+                height: 56px;
+            }
+
+            .device-icons {
+                font-size: 18px;
+                gap: 8px;
+                margin: 12px 0;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                margin: 50px 0;
+            }
+
+            .benefit-icon {
+                width: 100px;
+                height: 50px;
+                margin-bottom: 16px;
+            }
+
+            .benefit-card h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .benefit-card p {
+                font-size: 14px;
+            }
+
+            .global-network {
+                padding: 50px 0;
+            }
+
+            .global-network h2 {
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 24px;
+                margin-top: 24px;
+            }
+
+            .stat-number {
+                font-size: 36px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .server-locations-link {
+                margin-top: 24px;
+            }
+
+            .server-locations-link a {
+                font-size: 14px;
+            }
+
+            .her1 {
+                margin-right: 50%;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 20px;
+            }
+
+            .hero p {
+                font-size: 13px;
+            }
+
+            .feature-content h2 {
+                font-size: 20px;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .benefits-grid {
+                gap: 24px;
+            }
+
+            .benefit-card {
+                padding: 16px;
+            }
+
+            .cta-button {
+                /* align-items: start; */
+                animation: none;
+                text-align: left;
+                padding: 5px;
+            }
+
+            .her1 {
+                margin-right: 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">
+                    <img src="https://www.heise.de/download/media/expressvpn/expressvpn-monogram-logo-red_1-1-30.png" alt="logo" width="50px" height="25px"> ExpressVPN
+                </a>
+                <div class="language-selector">
+                    <span>English ▼</span>
+                </div>
+            </nav>
+            <div class="hero">
+                <br> <br><br><br><br><br><br>
+                <h1>The VPN that just works</h1>
+                <p>Go further with the #1 trusted leader in VPN</p>
+                <a href="#" class="her1 cta-button">Get ExpressVPN →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="feature-section">
+                <div class="feature-visual">
+                    <div class="pixelated-world"></div>
+                </div>
+                <div class="feature-content">
+                    <h2>Secure access, worldwide</h2>
+                    <p>Connect reliably from anywhere, to anywhere. Our network of high-speed servers across 94
+                        countries puts you in control.</p>
+                    <a href="#" class="cta-button">Get ExpressVPN</a>
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <div class="feature-visual">
+                    <div class="security-illustration">
+                        <div class="security-shield"></div>
+                    </div>
+                </div>
+                <div class="feature-content">
+                    <h2>One click to a safer internet</h2>
+                    <p>Going online doesn't have to mean being exposed. Whether you're shopping from your desk or just
+                        connecting at a café, keep your personal information more secure and private.</p>
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <div class="feature-visual">
+                    <div class="devices-visual">
+                        <div class="device-laptop"></div>
+                        <div class="device-tablet"></div>
+                        <div class="device-phone"></div>
+                    </div>
+                    <div class="device-icons">
+                        <span>💻</span>
+                        <span>📱</span>
+                        <span>🖥️</span>
+                        <span>⌚</span>
+                        <span>📡</span>
+                    </div>
+                </div>
+                <div class="feature-content">
+                    <h2>Use ExpressVPN on every device</h2>
+                    <p>Phone, tablet, computer, router—no matter where you are or what devices you're using, a single
+                        ExpressVPN subscription has got you covered.</p>
+                    <a href="#" class="see-all-apps">See all apps →</a>
+                    <br>
+                    <a href="#" class="cta-button">Get ExpressVPN</a>
+                </div>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon protection">🔒</div>
+                    <h3>Stronger data protection</h3>
+                    <p>Take charge of your online privacy and security with best-in-class encryption.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon global">🌍</div>
+                    <h3>Works seamlessly everywhere</h3>
+                    <p>Experience the internet the way it's meant to be. Be. On the go. Or even on mars.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon speed">⚡</div>
+                    <h3>Lightning-quick connectivity</h3>
+                    <p>Our VPN network is built for speed, powered by next-generation technology.</p>
+                </div>
+            </div>
+
+            <div class="see-advantages">
+                <a href="#">See more advantages →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="global-network">
+        <div class="container">
+            <img src="https://www.isbtweb.org/static/36dd4d59-e64d-4dd1-a1e452fe154abc14/1100x608_highestperformance__4a7c7e45a350/map.jpeg"
+                alt="Global Network Map" class="network-map">
+            <h2>Ultra-fast servers around the globe</h2>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">160</span>
+                    <span class="stat-label">locations</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">94</span>
+                    <span class="stat-label">countries</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">unlimited bandwidth</span>
+                </div>
+            </div>
+            <div class="server-locations-link">
+                <a href="#">See our full list of VPN server locations →</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
